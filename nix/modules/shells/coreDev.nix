@@ -33,6 +33,5 @@ hcMkShell {
         IOKit
         apple_sdk_11_0.frameworks.CoreFoundation
       ])
-    )
-    ;
+    );
 }
