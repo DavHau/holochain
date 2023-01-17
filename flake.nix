@@ -24,7 +24,7 @@
     };
     # eventually this should be removed, but `nix-shell` still requires holonix.
     holonix = {
-      url = "https://github.com/holochain/holonix";
+      url = "github:holochain/holonix";
       flake = false;
     };
   };
@@ -44,7 +44,7 @@
         ./nix/modules/nixEnvPrefixEval.nix
         ./nix/modules/releaseAutomation.nix
         ./nix/modules/rust
-        ./nix/modules/shells.nix
+        ./nix/modules/shells
       ];
       systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
       perSystem = { config, self', inputs', ... }: {
