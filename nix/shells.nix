@@ -58,6 +58,9 @@ let
     # the latest crate2nix is currently broken on darwin
      ++ (lib.optionals stdenv.isLinux [
       crate2nix
+    ])
+    ++ (lib.optionals stdenv.isDarwin [
+      holonix.pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
     ]);
   };
 
