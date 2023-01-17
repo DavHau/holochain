@@ -64,6 +64,11 @@
         # latest crate2nix broken on darwin
         ++ (lib.optionals pkgs.stdenv.isLinux [
           config.crate2nix
+        ])
+        ++ (lib.optionals pkgs.stdenv.isDarwin [
+          pkgs.darwin.IOKit 
+          pkgs.darwin.Security
+          pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
         ]);
     };
 
