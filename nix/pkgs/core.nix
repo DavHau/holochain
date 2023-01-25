@@ -3,7 +3,6 @@
 , lib
 , writeShellScriptBin
 , crate2nix
-
 , holonix
 , holonixPath
 , hcToplevelDir
@@ -35,7 +34,7 @@ rec {
 
     # run all the cargo tests
     cargo build --features 'build' -p holochain_wasm_test_utils
-    cargo nextest ''${CARGO_NEXTEST_ARGS:-run --test-threads=2} --workspace --features slow_tests,glacial_tests,test_utils,build_wasms,db-encryption --lib --tests --cargo-profile fast-test ''${1-}
+    cargo nextest ''${CARGO_NEXTEST_ARGS:-run} ${import ../../.config/nextest-args.nix} ''${1-}
   '';
 
   hcWasmTests = writeShellScriptBin "hc-test-wasm" ''
