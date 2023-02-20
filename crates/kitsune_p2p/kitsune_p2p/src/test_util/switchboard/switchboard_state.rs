@@ -1,6 +1,7 @@
 //! An in-memory network for sharded kitsune tests.
 
 use crate::gossip::sharded_gossip::{BandwidthThrottle, GossipType, ShardedGossip};
+use crate::meta_net::*;
 use crate::test_util::spawn_handler;
 use crate::types::gossip::*;
 use crate::types::wire;
@@ -135,13 +136,13 @@ impl Switchboard {
         let gossip = ShardedGossip::new(
             tuning_params,
             space.clone(),
-            ep_hnd.clone(),
+            MetaNet::Tx2(ep_hnd.clone()),
             evt_sender,
             host_api,
             self.gossip_type,
             bandwidth,
             Default::default(),
-            kitsune_p2p_fetch::FetchQueue::new_bitwise_or(),
+            kitsune_p2p_fetch::FetchPool::new_bitwise_or(),
         );
         let gossip_module = GossipModule(gossip.clone());
 
@@ -159,7 +160,11 @@ impl Switchboard {
                                 let data: Vec<u8> = data.into();
                                 let data: Box<[u8]> = data.into_boxed_slice();
 
-                                gossip_module.incoming_gossip(con, url, data)?
+                                gossip_module.incoming_gossip(
+                                    MetaNetCon::Tx2(con),
+                                    url.to_string(),
+                                    data,
+                                )?
                             }
                             _ => unimplemented!(),
                         }

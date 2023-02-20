@@ -51,7 +51,6 @@ rec {
     nativeBuildInputs = builtins.attrValues (pkgs.core)
       ++ [
       cargo-nextest
-      crate2nix
     ]
       ++ (with holonix.pkgs;[
       sqlcipher
@@ -59,13 +58,20 @@ rec {
       gh
       nixpkgs-fmt
       cargo-sweep
-    ]);
+      go
+    ])
+      ++ (lib.optionals stdenv.isDarwin
+      (with holonix.pkgs.darwin; [
+        Security
+        IOKit
+        apple_sdk_11_0.frameworks.CoreFoundation
+      ])
+    );
   };
 
   release = coreDev.overrideAttrs (attrs: {
     nativeBuildInputs = attrs.nativeBuildInputs ++ (with holonix.pkgs; [
       niv
-      cargo-readme
       (import ../crates/release-automation/default.nix { })
     ]);
   });
